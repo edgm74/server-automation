@@ -1,0 +1,20 @@
+automation:
+ processorCorePoolSize: 10
+ processorMaxPoolSize: 10
+fileWatcher:
+ tempDirectory: '/tmp/server-automation'
+ processorClassMappings:
+  -
+   directory: '/home/developer/testDir'
+   processor: 'audioManager'
+  -
+   directory: '/home/developer/testDir2'
+   processor: 'pictureManager'
+audioManager:
+ allowedInputFileExtensions: ['m4a']
+ originalFormatDestination: '/home/developer/lossless'
+ outputDestinations:
+ -
+  directory: '/home/developer/mp3'
+  conversionOptions: '-y -c:a libmp3lame -b:a 320k'
+  fileExtension: 'mp3'
