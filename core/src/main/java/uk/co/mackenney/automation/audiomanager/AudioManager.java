@@ -118,9 +118,10 @@ public class AudioManager implements FileProcessor {
         log.trace("<-- copyLosslessFileToTarget()");
     }
 
-    private void runFfmpeg(Path inputFile, Path outputFile, String conversionOptions) {
+    private void runFfmpeg(Tag tag, Path inputFile, Path outputFile, String conversionOptions) throws IOException {
         log.trace("--> runFfmpeg(" + inputFile + "," + outputFile + "," + conversionOptions + ")");
         ensureDirectoryExists(outputFile.getParent());
+        copyArtwork(tag, outputFile.getParent());
         StringTokenizer tokenizer = new StringTokenizer(conversionOptions," ");
         ArrayList<String> command = new ArrayList<>();
         command.add("ffmpeg");
@@ -147,7 +148,8 @@ public class AudioManager implements FileProcessor {
                 copyLosslessFileToTarget(tag, fileProcess.getTempFilePath(), fileUtil.getExtension(fileProcess.getPath()));
 
                 for (AudioManagerConfiguration.OutputDestination destination : config.getOutputDestinations()) {
-                    runFfmpeg(fileProcess.getTempFilePath()
+                    runFfmpeg(tag
+                             ,fileProcess.getTempFilePath()
                              ,getTargetPath(tag, Paths.get(destination.getDirectory()), destination.getFileExtension())
                              ,destination.getConversionOptions());
                 }
